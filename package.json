@@ -1,0 +1,30 @@
+{
+  "name": "transform-csv",
+  "version": "1.0.0",
+  "description": "Reconstruct CSVs into alternate file formats with cell-value transforms",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielshoo/transform-csv.git"
+  },
+  "keywords": [
+    "csv",
+    "transform"
+  ],
+  "author": "Daniel Shuster",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danielshoo/transform-csv/issues"
+  },
+  "homepage": "https://github.com/danielshoo/transform-csv#readme",
+  "dependencies": {
+    "esbuild": "0.17.13",
+    "react-dom": "^18.2.0"
+  }
+}

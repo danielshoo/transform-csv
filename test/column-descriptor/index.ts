@@ -1,8 +1,8 @@
 import {describe} from "mocha";
 import * as Crypto from "node:crypto";
+import ColumnDescriptor, {Cell} from "../../src/column-descriptor/ColumnDescriptor";
 
-var assert = require('assert');
-import ColumnDescriptor, {Cell} from "../../src/column-descriptor";
+const assert = require('assert');
 
 describe('Column Descriptor', function () {
     describe('#validateHeader', function () {
@@ -65,6 +65,13 @@ describe('Column Descriptor', function () {
             const testColumnDescriptor = new ColumnDescriptor('Has a pet', null, null, (cellValue) => hash.update(cellValue).digest('hex'));
             const hashedCell = testColumnDescriptor.transformCell(srcCell);
             assert.ok(hashedCell.value.match(/^[a-fA-F0-9]{64}$/gm));
+        });
+
+        it ("Transform does nothing to the src-cell's value", function () {
+            const srcCell = new Cell("yes");
+            const testColumnDescriptor = new ColumnDescriptor('Has a pet');
+            const newCell = testColumnDescriptor.transformCell(srcCell)
+            assert.equal(newCell.value, srcCell.value);
         });
 
         it ("Bad input throws an exception", function () {

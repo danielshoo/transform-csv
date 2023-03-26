@@ -1,10 +1,10 @@
 import {describe} from "mocha";
 import * as Crypto from "node:crypto";
-import ColumnDescriptor, {Cell} from "../../src/column-descriptor/ColumnDescriptor";
+import ColumnDescriptor, {Cell} from "../../src/csv-column-descriptor/CsvColumnDescriptor";
 
 const assert = require('assert');
 
-describe('Column Descriptor', function () {
+describe('CSV Column Descriptor', function () {
     describe('#validateHeader', function () {
 
         it('Returns true when the header validation regex matches', function () {

@@ -7,7 +7,7 @@ export class Cell {
     }
 }
 
-export default class ColumnDescriptor {
+export default class CsvColumnDescriptor {
 
     outputHeader: string;
     headerValidationRegex?: RegExp;

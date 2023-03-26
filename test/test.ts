@@ -4,7 +4,8 @@ import * as Process from 'process';
 
 const mochaObj = new Mocha();
 
-mochaObj.addFile(Path.resolve(__dirname, 'column-descriptor', 'index.ts'));
+mochaObj.addFile(Path.resolve(__dirname, 'csv-column-descriptor', 'index.ts'));
+
 
 mochaObj.run((failures:any) => {
     Process.exit(failures ? 1 : 0);

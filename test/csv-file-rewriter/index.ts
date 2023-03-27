@@ -3,13 +3,13 @@ const {afterEach, describe, it} = require("mocha");
 const CsvFileRewriter = require("../../src/csv-file-rewriter/CsvFileRewriter");
 const {default: CsvColumnDescriptor} = require("../../src/csv-column-descriptor/CsvColumnDescriptor");
 const assert = require('node:assert');
-const sinon = require("sinon");
 const nodePath = require("node:path");
 const fs = require("node:fs");
 const {EOL} = require('node:os')
 
-const inputTestFilePath = nodePath.resolve(__dirname, 'test.csv');
-const outputTestFilePath = nodePath.resolve(__dirname, 'out.csv');
+const inputTestFilePath = nodePath.resolve(__dirname, 'test-in.csv');
+const outputTestFilePath = nodePath.resolve(__dirname, 'test-out.csv');
+const expectedResultsFilePath = nodePath.resolve(__dirname, 'test-expected-out.csv');
 
 describe("CsvFileRewriter", function() {
 
@@ -28,11 +28,13 @@ describe("CsvFileRewriter", function() {
             const csvFileRewriter = new CsvFileRewriter();
 
             await csvFileRewriter.rewriteFile(csvFileDescriptor, inputTestFilePath, outputTestFilePath);
-            const fileContents = fs.readFileSync(outputTestFilePath, 'utf8');
-            // const actualContents = fileContents.replaceAll(EOL, '');
-            // const expectedContent = 'rewritten'.repeat(22);
-            //
-            // assert.equal(actualContents, expectedContent);
+            const actualFileContents = fs.readFileSync(outputTestFilePath, 'utf8');
+            const expectedFileContents = fs.readFileSync(expectedResultsFilePath, 'utf8');
+            debugger;
+            const actualContents = actualFileContents.replaceAll(EOL, '');
+            const expectedContent = expectedFileContents.replaceAll(EOL, '');
+
+            assert.equal(actualContents, expectedContent);
         });
     });
 

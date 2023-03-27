@@ -2,11 +2,13 @@ import * as Mocha from 'mocha';
 import * as Path from 'path';
 import * as Process from 'process';
 
-const mochaObj = new Mocha();
+const mocha = new Mocha();
 
-mochaObj.addFile(Path.resolve(__dirname, 'csv-column-descriptor', 'index.ts'));
+mocha.addFile(Path.resolve(__dirname, 'csv-column-descriptor', 'index.ts'));
+mocha.addFile(Path.resolve(__dirname, 'csv-file-rewriter', 'index.ts'));
+mocha.addFile(Path.resolve(__dirname, 'csv-file-descriptor', 'index.ts'));
 
 
-mochaObj.run((failures:any) => {
+mocha.run((failures:any) => {
     Process.exit(failures ? 1 : 0);
 });

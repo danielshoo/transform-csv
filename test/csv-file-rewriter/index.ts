@@ -1,25 +1,43 @@
-import {describe, it} from "mocha";
-import CsvFileRewriter from "../../src/csv-file-rewriter/CsvFileRewriter";
 import CsvFileDescriptor from "../../src/csv-file-descriptor/CsvFileDescriptor";
-import CsvColumnDescriptor from "../../src/csv-column-descriptor/CsvColumnDescriptor";
+const {beforeEach, describe, it} = require("mocha");
+const CsvFileRewriter = require("../../src/csv-file-rewriter/CsvFileRewriter");
+const CsvColumnDescriptor = require("../../src/csv-column-descriptor/CsvColumnDescriptor");
 const assert = require('node:assert');
 const sinon = require("sinon");
+const nodePath = require("node:path");
+const fs = require("node:fs");
+const {EOL} = require('node:os')
 
-
+const inputTestFilePath = nodePath.resolve(__dirname, 'test.csv');
+const outputTestFilePath = nodePath.resolve(__dirname, 'out.csv');
 
 describe("CsvFileRewriter", function() {
-    
-    describe("#rewriteRow", function () {
 
-        // const csvColumnDescriptorMocks = getCsvColumnDescriptorMocks(3);
-        const csvFileDescriptorMock = sinon.createStubInstance(CsvFileDescriptor);
-        const csvFileRewriter = new CsvFileRewriter(csvFileDescriptorMock);
-        
-        sinon.stub(csvFileRewriter, 'parseRow').returns(['secretemail@govt.com', 'top-level-clearance', 'active']);
-        
-        const rs = csvFileRewriter.rewriteRow("");
-        
-        console.log(rs);
+    afterEach(function() {
+        if (fs.existsSync(outputTestFilePath)) {
+            fs.unlinkSync(outputTestFilePath);
+        }
+    });
+
+    describe("#rewriteFile", function () {
+
+        it("rewrite file works asynchronously with worker thread", function (done) {
+            const csvFileDescriptorMock = sinon.createStubInstance(CsvFileDescriptor);
+            const csvFileRewriter = new CsvFileRewriter();
+
+            csvFileRewriter.rewriteFile(csvFileDescriptorMock, inputTestFilePath, outputTestFilePath).then(() => {
+
+                fs.readFile(outputTestFilePath, 'utf8', (err, data) => {
+
+                    const actualContents = data.replaceAll(EOL, '');
+                    const expectedContent = 'rewritten'.repeat(22);
+
+                    assert.equal(actualContents, expectedContent);
+
+                    done();
+                });
+            });
+        });
     });
 });
 

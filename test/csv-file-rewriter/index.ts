@@ -1,5 +1,5 @@
 import CsvFileDescriptor from "../../src/csv-file-descriptor/CsvFileDescriptor";
-const {beforeEach, describe, it} = require("mocha");
+const {afterEach, describe, it} = require("mocha");
 const CsvFileRewriter = require("../../src/csv-file-rewriter/CsvFileRewriter");
 const CsvColumnDescriptor = require("../../src/csv-column-descriptor/CsvColumnDescriptor");
 const assert = require('node:assert');
@@ -19,7 +19,7 @@ describe("CsvFileRewriter", function() {
         }
     });
 
-    describe("#rewriteFile", function () {
+    describe("#rewriteFile", function() {
 
         it("rewrite file works asynchronously with worker thread", function (done) {
             const csvFileDescriptorMock = sinon.createStubInstance(CsvFileDescriptor);
@@ -36,6 +36,18 @@ describe("CsvFileRewriter", function() {
 
                     done();
                 });
+            });
+        });
+    });
+
+    describe("#readFirstLine", function() {
+
+        it("gets first line", function(done) {
+            const csvFileDescriptorMock = sinon.createStubInstance(CsvFileDescriptor);
+            const csvFileRewriter = new CsvFileRewriter();
+            csvFileRewriter.readFirstLine(inputTestFilePath).then(firstLine => {
+                assert.equal(firstLine, 'test, 123, sadasf');
+                done();
             });
         });
     });

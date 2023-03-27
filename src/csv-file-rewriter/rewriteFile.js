@@ -18,7 +18,6 @@ function rewriteFile(
 		encoding: 'utf-8',
 	});
 	
-	
 	readStream.on('data', (chunk) => {
 		
 		const lineBuffer = chunk.split(EOL);

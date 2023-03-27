@@ -13,6 +13,7 @@ export default class CsvColumnDescriptor {
     headerValidationRegex?: RegExp;
     cellValidationRegexp?: RegExp;
     cellTransform?: (cellValue: string) => string;
+    isRequired = true;
 
     constructor(
         outputHeader: string,
@@ -24,6 +25,10 @@ export default class CsvColumnDescriptor {
         this.headerValidationRegex = headerValidationRegex;
         this.cellValidationRegexp = cellValidationRegex;
         this.cellTransform = cellTransform;
+    }
+
+    get isOptional() {
+        return !this.isRequired;
     }
 
     validateHeader(header: string): boolean {

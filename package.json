@@ -29,15 +29,16 @@
   "homepage": "https://github.com/danielshoo/transform-csv#readme",
   "dependencies": {
     "csv-parse": "^5.3.6",
+    "jsonfn": "^0.31.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/mocha": "^10.0.1",
     "esbuild": "0.17.13",
     "mocha": "^10.2.0",
     "npm": "^9.6.2",
     "nyc": "^15.1.0",
     "sinon": "^15.0.2",
-    "ts-node": "^10.9.1",
-    "@types/mocha": "^10.0.1"
+    "ts-node": "^10.9.1"
   }
 }

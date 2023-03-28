@@ -13,26 +13,29 @@ module.exports = class CsvFileRewriter extends EventEmitter {
         destFilePath: string,
     ) : Promise<any> {
 
+        // TODO: Migrate this from passing pieces of the column-descriptors piecemeal to sending the whole descriptor, prototype reconstituted within the worker:
         const columnMapping = await this.getColumnMapping(csvFileDescriptor, srcFilePath);
-        const cellValueTransforms = csvFileDescriptor.csvColumnDescriptors.map(csvFileDescriptor => {
-            return csvFileDescriptor.cellTransform;
+        const cellValueTransforms = csvFileDescriptor.csvColumnDescriptors.map(csvColumnDescriptor => {
+            return csvColumnDescriptor.cellTransform
         });
 
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
 
             const worker = new cfWorker(path.resolve(__dirname, 'worker.js'), {
                 workerData: {
                     srcFilePath,
                     destFilePath,
                     columnMapping,
+                    outputColumnHeaders: csvFileDescriptor.getColumnHeaders(),
                     valueTransforms: JSONfn.stringify(cellValueTransforms),
-                    testFunction: JSONfn.stringify(() => { return 123; })
                 }
             });
 
             worker.on('message', (message: string) => {
 
-                console.log(message);
+                if (message.includes('file error', 0)) {
+                    reject('could not rewrite file: ' + message);
+                }
 
                 if (message === 'complete') {
                     resolve(message);

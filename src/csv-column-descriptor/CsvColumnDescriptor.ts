@@ -17,9 +17,9 @@ export default class CsvColumnDescriptor {
 
     constructor(
         outputHeader: string,
-        headerValidationRegex?: RegExp,
-        cellValidationRegex?: RegExp,
-        cellTransform?: (val:string) => string
+        headerValidationRegex: RegExp = /.*/,
+        cellValidationRegex: RegExp = /.*/,
+        cellTransform: ((val: string) => string) = (cellVal:string) => { return cellVal},
     ) {
         this.outputHeader = outputHeader;
         this.headerValidationRegex = headerValidationRegex;

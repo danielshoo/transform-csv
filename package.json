@@ -1,6 +1,6 @@
 {
   "name": "transform-csv",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Reconstruct CSVs into alternate file formats with cell-value transforms",
   "main": "index.js",
   "directories": {

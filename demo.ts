@@ -49,7 +49,7 @@ const firstNameColumnDescriptor = new CsvColumnDescriptor(
 );
 
 const lastNameColumnDescriptor = new CsvColumnDescriptor(
-    'secret header 2',
+    'secret header 3',
     /last[ ]?name/i,
     null,
     fnHashCellValue

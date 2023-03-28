@@ -3,6 +3,8 @@ const eventEmitter = new EventEmitter();
 const fs = require('node:fs');
 const {EOL} = require('node:os');
 const parseLine = require('./parseLine');
+const readFirstLine = require('./readFirstLine');
+
 
 /**
  *
@@ -10,21 +12,34 @@ const parseLine = require('./parseLine');
  * @param {string} srcFilePath
  * @param {string} destFilePath
  * @param {[]} valueTransforms
+ * @param {[]} outputHeaders
  */
-function rewriteFile(
+async function rewriteFile(
 	columnMapping,
 	srcFilePath,
 	destFilePath,
-	valueTransforms
+	valueTransforms,
+	outputHeaders = []
 ) {
+	
+	// TODO: Convert this to using nodejs' native readline module. Potential issue exists with reading a data chunk and it fracturing a row with where it ends
+	const csvInputHeaderLine = await readFirstLine(srcFilePath);
+	const csvOutputHeaderLine = outputHeaders.length ? outputHeaders.join(',') : '';
+	
+	const writeStream = fs.createWriteStream(destFilePath, {
+		flags: 'w+',
+		encoding: 'utf-8',
+	});
+	
+	if (csvOutputHeaderLine) {
+		writeStream.write(csvOutputHeaderLine + EOL);
+	}
+	
 	const srcFileSize = fs.statSync(srcFilePath).size;
 	const readStream = fs.createReadStream(srcFilePath, {
 		flags: 'a+',
 		encoding: 'utf-8',
-	});
-	const writeStream = fs.createWriteStream(destFilePath, {
-		flags: 'w+',
-		encoding: 'utf-8',
+		start: parseInt(csvInputHeaderLine.length)
 	});
 	
 	readStream.on('data', (chunk) => {
@@ -37,13 +52,17 @@ function rewriteFile(
 			
 			parseLine(csvLine).then(csvRow => {
 				
+				if (!csvRow) {
+					return; // TODO: increment error count as the csvRow could not be parsed
+				}
+				
 				const newCsvRow = [];
 				
 				for (const [outputColumnNum, srcFileColumnNum] of Object.entries(columnMapping)) {
 					
 					if (typeof srcFileColumnNum === "undefined" || srcFileColumnNum === "") { // Column isn't mapped. Assume it is an optional column:
 						newCsvRow.push("");
-					} else {
+					} else if (typeof csvRow[srcFileColumnNum] !== 'undefined') {
 						const newCsvValue = valueTransforms[outputColumnNum](csvRow[srcFileColumnNum]);
 						newCsvRow.push(newCsvValue);
 					}

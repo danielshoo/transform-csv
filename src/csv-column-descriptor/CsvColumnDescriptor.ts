@@ -1,3 +1,5 @@
+const JSONfn = require('jsonfn').JSONfn;
+
 export class Cell {
 
     value: string;
@@ -43,5 +45,21 @@ export default class CsvColumnDescriptor {
         const srcCellVal = cell.value;
         const newCellVal = this.cellTransform ? this.cellTransform(srcCellVal) : srcCellVal;
         return new Cell(newCellVal);
+    }
+
+    hydrate() {
+        return JSONfn.stringify(this); // prototype is obviously lost
+    }
+
+    static dehydrate(json: string) {
+
+        const csvColumnDescriptorProperties = JSONfn.parse(json);
+
+        return new CsvColumnDescriptor(
+            csvColumnDescriptorProperties.outputHeader,
+            csvColumnDescriptorProperties.headerValidationRegex,
+            csvColumnDescriptorProperties.cellValidationRegexp,
+            csvColumnDescriptorProperties.cellTransform,
+        );
     }
 }

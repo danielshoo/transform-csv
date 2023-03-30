@@ -30,7 +30,7 @@ describe("CsvFileRewriter", function() {
             await csvFileRewriter.rewriteFile(csvFileDescriptor, inputTestFilePath, outputTestFilePath);
             const actualFileContents = fs.readFileSync(outputTestFilePath, 'utf8');
             const expectedFileContents = fs.readFileSync(expectedResultsFilePath, 'utf8');
-            debugger;
+
             const actualContents = actualFileContents.replaceAll(EOL, '');
             const expectedContent = expectedFileContents.replaceAll(EOL, '');
 

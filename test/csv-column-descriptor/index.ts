@@ -1,8 +1,8 @@
 import {describe} from "mocha";
 import * as Crypto from "node:crypto";
 import ColumnDescriptor, {Cell} from "../../src/csv-column-descriptor/CsvColumnDescriptor";
-
 const assert = require('assert');
+const sinon = require('sinon');
 
 describe('CSV Column Descriptor', function () {
     describe('#validateHeader', function () {
@@ -80,6 +80,23 @@ describe('CSV Column Descriptor', function () {
             assert.throws(() => {
                 testColumnDescriptor.transformCell(srcCell)
             });
+        });
+    });
+
+    describe("#hydrate/#dehydrate", function () {
+
+        it ("CsvColumDescriptor.hydrate() returns a string from which a new CsvColumnDescriptor instance can be dehydrated from", function () {
+
+            const testColumnDescriptor = new ColumnDescriptor('Has a pet', null, null, (cellValue) => cellValue.toUpperCase());
+            const hydratedColumnDescriptor = testColumnDescriptor.hydrate();
+
+            const reconstitutedColumnDescriptor = ColumnDescriptor.dehydrate(hydratedColumnDescriptor);
+            const transformCellSpy = sinon.spy(reconstitutedColumnDescriptor, 'transformCell');
+
+            const testCell = new Cell("yes");
+            const dehydrateProvingCell = reconstitutedColumnDescriptor.transformCell(testCell);
+
+            assert.ok(transformCellSpy.calledOnce);
         });
     });
 });

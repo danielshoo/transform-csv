@@ -8,7 +8,7 @@ Transform CSV's goal is to provide fast efficient CSV parsing with the ability t
  <li>Modify cell values</li>
  <li>Validate cell values</li>
  <li>Validate column headers</li>
- <li>Count cell values matching any number of patterns and</li>
+ <li>Count cell values matching any number of patterns</li>
  <li>Reorder columns</li>
 </ol>
 
@@ -16,8 +16,7 @@ Transform CSV's goal is to provide fast efficient CSV parsing with the ability t
 Over my years as a LAMP  developer and now again as a Full Stack Frontend developer,
 one thing has always been true. That is that companies and developers alike love CSVs. 
 What they don't like is when those CSV are so massive that opening/modifying them brings their PC to a halt. 
-What Transform CSV enables developers to do is take their precise expertise, which may not even be in Excel/Sheets.
-and apply it to CSVs as they know how to do and to do it quickly with minimal memory overhead.
+Transform CSV enables developers to programmatically alter CSVs en masse with minimal memory usage and multi-threading for speed.
 
 
 ### Demo
@@ -35,4 +34,4 @@ Run npm run demo
 
 This will output a USER_PII_share_ready.csv file where each column having PII
 is hashed. The userID is retained. The person's condition has also been obfuscated
-from being plain text description to being a status code.
+from being a plain text description to being a status code.

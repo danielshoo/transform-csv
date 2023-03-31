@@ -48,7 +48,13 @@ export default class CsvColumnDescriptor {
     }
 
     hydrate() {
-        return JSONfn.stringify(this); // prototype is obviously lost
+        const dto = {
+            outputHeader: this.outputHeader,
+            headerValidationRegex: this.headerValidationRegex?.source,
+            cellValidationRegexp: this.cellValidationRegexp?.source,
+            cellTransform: this.cellTransform?.toString(),
+        };
+        return JSONfn.stringify(dto);
     }
 
     static dehydrate(json: string) {
@@ -57,9 +63,9 @@ export default class CsvColumnDescriptor {
 
         return new CsvColumnDescriptor(
             csvColumnDescriptorProperties.outputHeader,
-            csvColumnDescriptorProperties.headerValidationRegex,
-            csvColumnDescriptorProperties.cellValidationRegexp,
-            csvColumnDescriptorProperties.cellTransform,
+            new RegExp(csvColumnDescriptorProperties.headerValidationRegex),
+            new RegExp(csvColumnDescriptorProperties.cellValidationRegexp),
+            eval(csvColumnDescriptorProperties.cellTransform)
         );
     }
 }

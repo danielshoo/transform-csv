@@ -9,7 +9,7 @@
   "scripts": {
     "test": "ts-node test/test.ts",
     "build": "node ./scripts/esbuild.js",
-    "demo": "node demo.js",
+    "demo": "npm run build && node demo.js",
     "test:inspect": "node --inspect -r ts-node/register ./test/test.ts",
     "test:coverage": "nyc ts-node test/test.ts"
   },

@@ -1,4 +1,5 @@
 import CsvFileDescriptor from "../../src/csv-file-descriptor/CsvFileDescriptor";
+const readFirstLine = require('../../src/csv-file-rewriter/readFirstLine');
 const {afterEach, describe, it} = require("mocha");
 const CsvFileRewriter = require("../../src/csv-file-rewriter/CsvFileRewriter");
 const {default: CsvColumnDescriptor} = require("../../src/csv-column-descriptor/CsvColumnDescriptor");
@@ -42,9 +43,7 @@ describe("CsvFileRewriter", function() {
 
         it("gets first line", async function() {
 
-            const csvFileRewriter = new CsvFileRewriter();
-
-            const firstLine = await csvFileRewriter.readFirstLine(inputTestFilePath)
+            const firstLine = await readFirstLine(inputTestFilePath)
             assert.equal(firstLine, 'Header 0, Header 1, Header 2')
         });
     });

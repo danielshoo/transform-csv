@@ -21,4 +21,10 @@ export default class CsvFileDescriptor {
             return columnDescriptor.outputHeader;
         });
     }
+
+    getCellTransforms() {
+        return this.csvColumnDescriptors.map((columnDescriptor: ColumnDescriptor) => {
+            return columnDescriptor.cellTransform;
+        });
+    }
 }

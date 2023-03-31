@@ -6,25 +6,18 @@ const parseLine = require('./parseLine');
 const readFirstLine = require('./readFirstLine');
 
 
-/**
- *
- * @param {object} columnMapping
- * @param {string} srcFilePath
- * @param {string} destFilePath
- * @param {[]} valueTransforms
- * @param {[]} outputHeaders
- */
 async function rewriteFile(
+	csvFileDescriptor,
 	columnMapping,
 	srcFilePath,
-	destFilePath,
-	valueTransforms,
-	outputHeaders = []
+	destFilePath
 ) {
+	
+	const outputHeaders = csvFileDescriptor.getColumnHeaders();
 	
 	// TODO: Convert this to using nodejs' native readline module. Potential issue exists with reading a data chunk and it fracturing a row with where it ends
 	const csvInputHeaderLine = await readFirstLine(srcFilePath);
-	const csvOutputHeaderLine = outputHeaders.length ? outputHeaders.join(',') : '';
+	const csvOutputHeaderLine = outputHeaders.join(',');
 	
 	const writeStream = fs.createWriteStream(destFilePath, {
 		flags: 'w+',
@@ -42,6 +35,10 @@ async function rewriteFile(
 		start: parseInt(csvInputHeaderLine.length)
 	});
 	
+	doRewrite(readStream, writeStream, columnMapping, csvFileDescriptor.getCellTransforms());
+}
+
+function doRewrite(readStream, writeStream, columnMapping, valueTransforms, destFilePath) {
 	readStream.on('data', (chunk) => {
 		
 		const lineBuffer = chunk.split(EOL);
@@ -72,12 +69,6 @@ async function rewriteFile(
 				
 				writeStream.write(transformedCsvLine + EOL);
 			});
-		});
-		
-		const destFileSize = fs.statSync(destFilePath)?.size;
-		
-		eventEmitter.emit('chunk written', {
-			percentageComplete: Math.floor((destFileSize / srcFileSize) * 100)
 		});
 		
 		readStream.on('close', () => {

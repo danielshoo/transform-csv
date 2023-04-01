@@ -1,4 +1,4 @@
-const JSONfn = require('jsonfn').JSONfn;
+import {JSONfn} from 'jsonfn';
 
 export class Cell {
 

@@ -1,11 +1,8 @@
-const readFirstLine = require('./readFirstLine');
-const parseLine = require('./parseLine');
-const {JSONfn} = require("jsonfn")
+import readFirstLine from './readFirstLine';
+import parseLine from './parseLine';
 
-module.exports = async function getColumnMapping(csvFileDescriptor, srcFilePath) {
-	
-	
-	
+export default async function getColumnMapping(csvFileDescriptor, srcFilePath) {
+
 	const columnMapping = {};
 	const missingColumns = [];
 	const firstLine = await readFirstLine(srcFilePath);

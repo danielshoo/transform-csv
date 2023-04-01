@@ -1,12 +1,15 @@
-const EventEmitter = require('node:events').EventEmitter;
+import {EventEmitter} from 'node:events';
+import * as fs from 'node:fs';
+import {EOL} from 'node:os';
+import parseLine from './parseLine';
+import readFirstLine from './readFirstLine';
+
+
 const eventEmitter = new EventEmitter();
-const fs = require('node:fs');
-const {EOL} = require('node:os');
-const parseLine = require('./parseLine');
-const readFirstLine = require('./readFirstLine');
 
+export {eventEmitter};
 
-async function rewriteFile(
+export default async function rewriteFile(
 	csvFileDescriptor,
 	columnMapping,
 	srcFilePath,
@@ -16,7 +19,7 @@ async function rewriteFile(
 	const outputHeaders = csvFileDescriptor.getColumnHeaders();
 	
 	// TODO: Convert this to using nodejs' native readline module. Potential issue exists with reading a data chunk and it fracturing a row with where it ends
-	const csvInputHeaderLine = await readFirstLine(srcFilePath);
+	const csvInputHeaderLine = await readFirstLine(srcFilePath) as string;
 	const csvOutputHeaderLine = outputHeaders.join(',');
 	
 	const writeStream = fs.createWriteStream(destFilePath, {
@@ -28,17 +31,17 @@ async function rewriteFile(
 		writeStream.write(csvOutputHeaderLine + EOL);
 	}
 	
-	const srcFileSize = fs.statSync(srcFilePath).size;
+	// const srcFileSize = fs.statSync(srcFilePath).size;
 	const readStream = fs.createReadStream(srcFilePath, {
 		flags: 'a+',
 		encoding: 'utf-8',
-		start: parseInt(csvInputHeaderLine.length)
+		start: csvInputHeaderLine.length
 	});
 	
 	doRewrite(readStream, writeStream, columnMapping, csvFileDescriptor.getCellTransforms());
 }
 
-function doRewrite(readStream, writeStream, columnMapping, valueTransforms, destFilePath) {
+function doRewrite(readStream, writeStream, columnMapping, valueTransforms) {
 	readStream.on('data', (chunk) => {
 		
 		const lineBuffer = chunk.split(EOL);
@@ -54,17 +57,17 @@ function doRewrite(readStream, writeStream, columnMapping, valueTransforms, dest
 				}
 				
 				const newCsvRow = [];
-				
+
 				for (const [outputColumnNum, srcFileColumnNum] of Object.entries(columnMapping)) {
-					
+
 					if (typeof srcFileColumnNum === "undefined" || srcFileColumnNum === "") { // Column isn't mapped. Assume it is an optional column:
 						newCsvRow.push("");
-					} else if (typeof csvRow[srcFileColumnNum] !== 'undefined') {
+					} else if (typeof srcFileColumnNum === 'number' && typeof csvRow[srcFileColumnNum] !== 'undefined') {
 						const newCsvValue = valueTransforms[outputColumnNum](csvRow[srcFileColumnNum]);
 						newCsvRow.push(newCsvValue);
 					}
 				}
-				
+
 				const transformedCsvLine = newCsvRow.join(',');
 				
 				writeStream.write(transformedCsvLine + EOL);
@@ -79,7 +82,3 @@ function doRewrite(readStream, writeStream, columnMapping, valueTransforms, dest
 	});
 }
 
-module.exports = {
-	rewriteFile,
-	eventEmitter,
-};

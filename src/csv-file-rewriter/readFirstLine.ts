@@ -1,16 +1,16 @@
-const fs = require("node:fs")
-const {EOL} = require("node:os")
+import * as fs from 'node:fs';
+import { EOL } from "node:os";
 
-module.exports = function(srcFilePath) {
+export default function(srcFilePath) {
 	
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve) => {
 		
 		const readStream = fs.createReadStream(srcFilePath, {
 			flags: 'a+',
 			encoding: 'utf-8',
 		});
 		
-		readStream.on('data', (chunk) => {
+		readStream.on('data', (chunk: string) => {
 			
 			const lineBuffer = chunk.split(EOL);
 			

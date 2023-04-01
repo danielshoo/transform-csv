@@ -1,6 +1,6 @@
-const {parse} = require('csv-parse/sync');
+import {parse} from 'csv-parse/sync';
 
-module.exports = function(line) {
+export default function(line) {
 	
 	return new Promise((resolve) => {
 		

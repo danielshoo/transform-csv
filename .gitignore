@@ -1,3 +1,14 @@
+node_modules
+
+##############################################################
+# Ignore files/directories that are added third party tools
+##############################################################
 .idea
 .nyc_output
-node_modules
+
+####################################
+# Ignore files that are built
+####################################
+src/**/*.js
+index.js
+demo.js

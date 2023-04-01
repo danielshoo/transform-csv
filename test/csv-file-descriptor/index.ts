@@ -1,8 +1,8 @@
 import {describe, it} from "mocha";
-const {default: CsvColumnDescriptor, Cell} = require("../../src/csv-column-descriptor/CsvColumnDescriptor");
-const {default: CsvFileDescriptor} = require("../../src/csv-file-descriptor/CsvFileDescriptor");
-const assert = require('node:assert');
-const sinon = require('sinon');
+import CsvColumnDescriptor from "../../src/csv-column-descriptor/CsvColumnDescriptor";
+import CsvFileDescriptor from "../../src/csv-file-descriptor/CsvFileDescriptor";
+import * as assert from 'node:assert';
+import * as sinon from 'sinon';
 
 describe("CsvFileDescriptor", function() {
     describe("#getColumnHeaders", function() {

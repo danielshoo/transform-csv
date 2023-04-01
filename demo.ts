@@ -1,9 +1,8 @@
 
 import * as path from "node:path";
-
-const CsvFileRewriter = require('./src/csv-file-rewriter/CsvFileRewriter');
-const {default: CsvFileDescriptor} = require('./src/csv-file-descriptor/CsvFileDescriptor');
-const {default: CsvColumnDescriptor} = require('./src/csv-column-descriptor/CsvColumnDescriptor');
+import CsvFileRewriter from "./src/csv-file-rewriter/CsvFileRewriter";
+import CsvFileDescriptor from "./src/csv-file-descriptor/CsvFileDescriptor";
+import CsvColumnDescriptor from "./src/csv-column-descriptor/CsvColumnDescriptor";
 
 function fnHashCellValue(cellValue) {
     const Crypto = require("node:crypto");
@@ -14,9 +13,6 @@ function fnHashCellValue(cellValue) {
 
     return hash.update(hashSalt + cellValue).digest('hex');
 }
-
-// In practice, this entire file would be client code and with a non-published salt pulled from a DB or environment file
-const hashSalt = 'always1 salt2. Rainbow tables are bad1@!#';
 
 const userIdColumnDescriptor = new CsvColumnDescriptor(
     'userID',
@@ -59,7 +55,7 @@ const lastNameColumnDescriptor = new CsvColumnDescriptor(
 const emailColumnDescriptor = new CsvColumnDescriptor(
     'email',
     /email[ ]?address/i,
-    /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
+    /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)])/,
     fnHashCellValue
 )
 
@@ -76,7 +72,7 @@ const csvFileDescriptor = new CsvFileDescriptor(
 
 const csvFileRewriter = new CsvFileRewriter();
 csvFileRewriter.rewriteFile(csvFileDescriptor, path.resolve(__dirname, 'USER_PII.csv'), path.resolve(__dirname, 'USER_PII_share_ready.csv'))
-.then(successMessage => {
+.then(() => {
 
 })
 .catch(errorMessage => {

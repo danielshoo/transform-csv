@@ -1,10 +1,10 @@
-import ColumnDescriptor from "../csv-column-descriptor/CsvColumnDescriptor";
+import CsvColumnDescriptor from "../csv-column-descriptor/CsvColumnDescriptor";
 
 export default class CsvFileDescriptor {
 
-    csvColumnDescriptors: Array<ColumnDescriptor> = [];
+    csvColumnDescriptors: Array<CsvColumnDescriptor> = [];
 
-    constructor(columnDescriptors: Array<ColumnDescriptor>) {
+    constructor(columnDescriptors: Array<CsvColumnDescriptor>) {
         this.csvColumnDescriptors = columnDescriptors;
     }
 
@@ -17,13 +17,13 @@ export default class CsvFileDescriptor {
     }
 
     getColumnHeaders() {
-        return this.csvColumnDescriptors.map((columnDescriptor: ColumnDescriptor) => {
+        return this.csvColumnDescriptors.map((columnDescriptor: CsvColumnDescriptor) => {
             return columnDescriptor.outputHeader;
         });
     }
 
     getCellTransforms() {
-        return this.csvColumnDescriptors.map((columnDescriptor: ColumnDescriptor) => {
+        return this.csvColumnDescriptors.map((columnDescriptor: CsvColumnDescriptor) => {
             return columnDescriptor.cellTransform;
         });
     }

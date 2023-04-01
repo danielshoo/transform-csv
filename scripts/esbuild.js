@@ -2,12 +2,11 @@ const esbuild = require('esbuild');
 const path = require('path');
 const fs = require('fs');
 
-/*
-
 // For the moment, we only care about worker.ts, demo.ts, and the dist file index.ts. Let's keep it simple until ES & CJS module resolution gets consolidated to one style.
 
+const projectRoot = path.resolve(__dirname, '..');
 const srcBasePath = path.resolve(projectRoot, 'src');
-const testBasePath = path.resolve(projectRoot, 'test');
+// const testBasePath = path.resolve(projectRoot, 'test');
 
 function readTsFilesInDir(dir, tsFiles = []) {
 
@@ -22,20 +21,16 @@ function readTsFilesInDir(dir, tsFiles = []) {
 	return tsFiles;
 }
 
-const srcTsFiles = readTsFilesInDir(srcBasePath);
-const testTsFiles = readTsFilesInDir(testBasePath);
-const allTsFiles = srcTsFiles.concat(testTsFiles);
- */
+const filesToBuild = [
+	'index.ts',
+	'demo.ts',
+];
+const srcTsFiles = readTsFilesInDir(srcBasePath, filesToBuild);
+// const testTsFiles = readTsFilesInDir(testBasePath);
+// const allTsFiles = srcTsFiles.concat(testTsFiles);
 
 
-const projectRoot = path.resolve(__dirname, '..');
-const allTsFiles = [
-	projectRoot + '/src/csv-file-rewriter/worker.ts',
-	projectRoot + '/demo.ts',
-	projectRoot + '/index.ts',
-]
-
-allTsFiles.forEach(tsFile => {
+srcTsFiles.forEach(tsFile => {
 	esbuild.build({
 		platform: 'node',
 		keepNames: true,
@@ -45,5 +40,4 @@ allTsFiles.forEach(tsFile => {
 		bundle: true,
 		format: 'cjs',
 		target: 'node16',
-	});
-});
+	});});

@@ -1,8 +1,8 @@
 import {describe} from "mocha";
 import * as Crypto from "node:crypto";
 import CsvColumnDescriptor, {Cell} from "../../src/csv-column-descriptor/CsvColumnDescriptor";
-const assert = require('assert');
-const sinon = require('sinon');
+import * as assert from 'assert';
+import * as sinon from 'sinon';
 
 describe('CSV Column Descriptor', function () {
     describe('#validateHeader', function () {
@@ -94,7 +94,7 @@ describe('CSV Column Descriptor', function () {
             const transformCellSpy = sinon.spy(reconstitutedColumnDescriptor, 'transformCell');
 
             const testCell = new Cell("yes");
-            const dehydrateProvingCell = reconstitutedColumnDescriptor.transformCell(testCell);
+            reconstitutedColumnDescriptor.transformCell(testCell);
 
             assert.ok('test'.match(reconstitutedColumnDescriptor.headerValidationRegex));
             assert.ok('123'.match(reconstitutedColumnDescriptor.cellValidationRegexp));

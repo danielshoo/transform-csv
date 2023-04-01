@@ -1,13 +1,7 @@
 import {Worker} from "node:worker_threads";
+import {EventEmitter} from "node:events";
 
-const {Worker: cfWorker} = require('node:worker_threads');
-const EventEmitter = require('events').EventEmitter;
-const path = require('path');
-const parseLine = require('./parseLine');
-const readFirstLine = require('./readFirstLine');
-const JSONfn = require('jsonfn').JSONfn;
-
-module.exports = class CsvFileRewriter extends EventEmitter {
+export default class CsvFileRewriter extends EventEmitter {
 
     async rewriteFile(
         csvFileDescriptor: any,

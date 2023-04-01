@@ -1,16 +1,17 @@
-import CsvFileDescriptor from "../../src/csv-file-descriptor/CsvFileDescriptor";
-const readFirstLine = require('../../src/csv-file-rewriter/readFirstLine');
-const {afterEach, describe, it} = require("mocha");
-const CsvFileRewriter = require("../../src/csv-file-rewriter/CsvFileRewriter");
-const {default: CsvColumnDescriptor} = require("../../src/csv-column-descriptor/CsvColumnDescriptor");
-const assert = require('node:assert');
-const nodePath = require("node:path");
-const fs = require("node:fs");
-const {EOL} = require('node:os')
+import CsvFileDescriptor from '../../src/csv-file-descriptor/CsvFileDescriptor';
+import readFirstLine from '../../src/csv-file-rewriter/readFirstLine';
+import { afterEach, describe, it } from 'mocha';
+import CsvFileRewriter from '../../src/csv-file-rewriter/CsvFileRewriter';
+import CsvColumnDescriptor from '../../src/csv-column-descriptor/CsvColumnDescriptor';
+import * as assert from 'node:assert';
+import * as path from 'node:path';
+import * as fs from 'node:fs';
+import { EOL } from 'node:os';
 
-const inputTestFilePath = nodePath.resolve(__dirname, 'test-in.csv');
-const outputTestFilePath = nodePath.resolve(__dirname, 'test-out.csv');
-const expectedResultsFilePath = nodePath.resolve(__dirname, 'test-expected-out.csv');
+const inputTestFilePath = path.resolve(__dirname, 'test-in.csv');
+const outputTestFilePath = path.resolve(__dirname, 'test-out.csv');
+const expectedResultsFilePath = path.resolve(__dirname, 'test-expected-out.csv');
+
 
 describe("CsvFileRewriter", function() {
 

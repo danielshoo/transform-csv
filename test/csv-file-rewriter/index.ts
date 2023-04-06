@@ -10,6 +10,7 @@ import { EOL } from 'node:os';
 const inputTestFilePath = path.resolve(__dirname, 'test-in.csv');
 const outputTestFilePath = path.resolve(__dirname, 'test-out.csv');
 const expectedResultsFilePath = path.resolve(__dirname, 'test-expected-out.csv');
+const expectedResultsFilePath2 = path.resolve(__dirname, 'test-expected-out-reordered.csv');
 
 
 describe("CsvFileRewriter", function() {
@@ -31,6 +32,28 @@ describe("CsvFileRewriter", function() {
             await csvFileRewriter.rewriteFile(csvFileDescriptor, inputTestFilePath, outputTestFilePath);
             const actualFileContents = fs.readFileSync(outputTestFilePath, 'utf8');
             const expectedFileContents = fs.readFileSync(expectedResultsFilePath, 'utf8');
+
+            const actualContents = actualFileContents.replaceAll(EOL, '');
+            const expectedContent = expectedFileContents.replaceAll(EOL, '');
+
+            assert.equal(actualContents, expectedContent);
+        });
+
+
+        it("rewrite file can reorder columns", async function () {
+
+            const csvColumnDescriptors = getCsvColumnDescriptor(3);
+            
+            const tmp = csvColumnDescriptors[2];
+            csvColumnDescriptors.unshift(tmp);
+            csvColumnDescriptors.pop();
+            
+            const csvFileDescriptor = new CsvFileDescriptor(csvColumnDescriptors);
+            const csvFileRewriter = new CsvFileRewriter();
+
+            await csvFileRewriter.rewriteFile(csvFileDescriptor, inputTestFilePath, outputTestFilePath);
+            const actualFileContents = fs.readFileSync(outputTestFilePath, 'utf8');
+            const expectedFileContents = fs.readFileSync(expectedResultsFilePath2, 'utf8');
 
             const actualContents = actualFileContents.replaceAll(EOL, '');
             const expectedContent = expectedFileContents.replaceAll(EOL, '');

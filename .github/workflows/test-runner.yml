@@ -1,0 +1,15 @@
+name: test-runner
+run-name: Test Runner
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Main
+        uses: actions/checkout@main
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.5.2
+      - name: Install Dependencies per Lockfile
+        run: npm ci
+      - name: Run Tests
+        run: npm run test

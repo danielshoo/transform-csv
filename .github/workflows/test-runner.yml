@@ -11,5 +11,7 @@ jobs:
         uses: actions/setup-node@v2.5.2
       - name: Install Dependencies per Lockfile
         run: npm ci
+      - name: Run Frontend Build
+        run: npm run build
       - name: Run Tests
         run: npm run test

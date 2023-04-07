@@ -1,5 +1,6 @@
 import {Worker} from "node:worker_threads";
 import {EventEmitter} from "node:events";
+import * as path from 'node:path';
 
 export default class CsvFileRewriter extends EventEmitter {
 
@@ -15,7 +16,8 @@ export default class CsvFileRewriter extends EventEmitter {
 
         return new Promise((resolve, reject) => {
 
-            const worker = new Worker('./src/csv-file-rewriter/worker.js', {
+
+            const worker = new Worker(path.resolve(process.cwd(), 'src', 'csv-file-rewriter', 'worker.js'), {
                 workerData: {
                     srcFilePath,
                     destFilePath,

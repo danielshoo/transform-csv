@@ -1,4 +1,3 @@
-import {describe} from "mocha";
 import * as Crypto from "node:crypto";
 import CsvColumnDescriptor, {Cell} from "../../src/csv-column-descriptor/CsvColumnDescriptor";
 import * as assert from 'assert';

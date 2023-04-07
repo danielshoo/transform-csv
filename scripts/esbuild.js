@@ -6,7 +6,7 @@ const fs = require('fs');
 
 const projectRoot = path.resolve(__dirname, '..');
 const srcBasePath = path.resolve(projectRoot, 'src');
-// const testBasePath = path.resolve(projectRoot, 'test');
+const testBasePath = path.resolve(projectRoot, 'test');
 
 function readTsFilesInDir(dir, tsFiles = []) {
 
@@ -26,11 +26,10 @@ const filesToBuild = [
 	'demo.ts',
 ];
 const srcTsFiles = readTsFilesInDir(srcBasePath, filesToBuild);
-// const testTsFiles = readTsFilesInDir(testBasePath);
-// const allTsFiles = srcTsFiles.concat(testTsFiles);
+const testTsFiles = readTsFilesInDir(testBasePath);
+const allTsFiles = srcTsFiles.concat(testTsFiles);
 
-
-srcTsFiles.forEach(tsFile => {
+allTsFiles.forEach(tsFile => {
 	esbuild.build({
 		platform: 'node',
 		keepNames: true,

@@ -1,4 +1,3 @@
-import {describe, it} from "mocha";
 import CsvColumnDescriptor from "../../src/csv-column-descriptor/CsvColumnDescriptor";
 import CsvFileDescriptor from "../../src/csv-file-descriptor/CsvFileDescriptor";
 import * as assert from 'node:assert';

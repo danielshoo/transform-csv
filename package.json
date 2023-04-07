@@ -7,10 +7,11 @@
     "test": "test"
   },
   "scripts": {
-    "test": "ts-node test/test.ts",
     "build": "node ./scripts/esbuild.js",
     "demo": "npm run build && node demo.js",
-    "test:inspect": "node --inspect -r ts-node/register ./test/test.ts",
+    "test": " npx mocha --extension js --recursive ./test/**/*.js",
+    "test:inspect": " npx mocha --extension js --recursive --inspect ./test/**/*.js",
+    "test:inspect:brk": " npx mocha --extension js --recursive --inspect-brk ./test/**/*.js",
     "test:coverage": "nyc ts-node test/test.ts"
   },
   "repository": {
@@ -34,6 +35,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
     "esbuild": "0.17.13",
     "mocha": "^10.2.0",
     "npm": "^9.6.2",

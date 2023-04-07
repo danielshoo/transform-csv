@@ -1,5 +1,5 @@
 import * as fs from 'node:fs';
-import { EOL } from "node:os";
+import * as readline from "node:readline";
 
 export default function(srcFilePath) {
 	
@@ -9,14 +9,20 @@ export default function(srcFilePath) {
 			flags: 'a+',
 			encoding: 'utf-8',
 		});
-		
-		readStream.on('data', (chunk: string) => {
-			
-			const lineBuffer = chunk.split(EOL);
-			
+
+		const rl = readline.createInterface({
+			'input': readStream,
+		});
+
+		rl.on('line', (line) => {
+
 			readStream.close();
-			
-			resolve(lineBuffer[0]);
+
+			resolve(line);
+		});
+
+		rl.on('close', () => {
+			resolve(null);
 		});
 	});
 }

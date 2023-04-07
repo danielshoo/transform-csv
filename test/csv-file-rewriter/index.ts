@@ -44,7 +44,8 @@ describe("CsvFileRewriter", function() {
 
         it("gets first line", async function() {
 
-            const firstLine = await readFirstLine(inputTestFilePath)
+            const firstLine = await readFirstLine(inputTestFilePath);
+
             assert.equal(firstLine, 'Header 0, Header 1, Header 2')
         });
     });

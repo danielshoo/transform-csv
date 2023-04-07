@@ -45,37 +45,42 @@ function doRewrite(readStream, writeStream, columnMapping, valueTransforms) {
 
 	const rl = readline.createInterface({
 		input: readStream,
+		output: writeStream,
+	});
+
+	writeStream.on('finish', () => {
+		eventEmitter.emit('complete');
 	});
 
 	rl.on('close', () => {
-		eventEmitter.emit('complete');
+
+		writeStream.end();
+
 	});
 
 	rl.on('line', (line) => {
 
-		parseLine(line).then(csvRow => {
+		const csvRow = parseLine(line)
 
-			if (!csvRow) {
-				return; // TODO: increment error count as the csvRow could not be parsed
+		if (!csvRow) {
+			return; // TODO: increment error count as the csvRow could not be parsed
+		}
+
+		const newCsvRow = [];
+
+		for (const [outputColumnNum, srcFileColumnNum] of Object.entries(columnMapping)) {
+
+			if (typeof srcFileColumnNum === "undefined" || srcFileColumnNum === "") { // Column isn't mapped. Assume it is an optional column:
+				newCsvRow.push("");
+			} else if (typeof srcFileColumnNum === 'number' && typeof csvRow[srcFileColumnNum] !== 'undefined') {
+				const newCsvValue = valueTransforms[outputColumnNum](csvRow[srcFileColumnNum]);
+				newCsvRow.push(newCsvValue);
 			}
+		}
 
-			const newCsvRow = [];
+		const transformedCsvLine = newCsvRow.join(',');
 
-			for (const [outputColumnNum, srcFileColumnNum] of Object.entries(columnMapping)) {
-
-				if (typeof srcFileColumnNum === "undefined" || srcFileColumnNum === "") { // Column isn't mapped. Assume it is an optional column:
-					newCsvRow.push("");
-				} else if (typeof srcFileColumnNum === 'number' && typeof csvRow[srcFileColumnNum] !== 'undefined') {
-					const newCsvValue = valueTransforms[outputColumnNum](csvRow[srcFileColumnNum]);
-					newCsvRow.push(newCsvValue);
-				}
-			}
-
-			const transformedCsvLine = newCsvRow.join(',');
-
-			writeStream.write(transformedCsvLine + EOL);
-		});
-
+		writeStream.write(transformedCsvLine + EOL);
 	});
 }
 

@@ -12,7 +12,6 @@
     "test": " npx mocha --extension js --recursive ./test/**/*.js",
     "test:inspect": " npx mocha --extension js --recursive --inspect ./test/**/*.js",
     "test:inspect:brk": " npx mocha --extension js --recursive --inspect-brk ./test/**/*.js",
-    "test:coverage": "nyc ts-node test/test.ts"
   },
   "repository": {
     "type": "git",

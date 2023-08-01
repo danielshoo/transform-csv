@@ -25,8 +25,8 @@ To see the demo in action, please:
 Clone the repo:
 > git clone git@github.com:danielshoo/transform-csv.git
 
-Run npm ci
-> npm run ci
+Install packages to their last known stable versions:
+> npm ci
 
 Run npm run demo
 > npm run demo

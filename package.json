@@ -11,7 +11,7 @@
     "demo": "npm run build && node demo.js",
     "test": " npx mocha --extension js --recursive ./test/**/*.js",
     "test:inspect": " npx mocha --extension js --recursive --inspect ./test/**/*.js",
-    "test:inspect:brk": " npx mocha --extension js --recursive --inspect-brk ./test/**/*.js",
+    "test:inspect:brk": " npx mocha --extension js --recursive --inspect-brk ./test/**/*.js"
   },
   "repository": {
     "type": "git",
